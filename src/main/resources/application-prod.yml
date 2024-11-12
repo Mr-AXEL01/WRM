@@ -1,0 +1,15 @@
+spring:
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  datasource:
+    url: jdbc:postgresql://localhost:5431/wrm
+    username: axel
+    password: 6631
+
+  show-sql: true
+  properties:
+    hibernate:
+      format_sql: true
