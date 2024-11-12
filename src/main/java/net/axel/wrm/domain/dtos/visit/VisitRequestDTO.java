@@ -5,7 +5,7 @@ import net.axel.wrm.domain.enums.Status;
 
 import java.time.LocalDateTime;
 
-public record visitRequestDTO(
+public record VisitRequestDTO(
         @NotNull LocalDateTime arrivalTime,
         @NotNull Status status,
         @NotNull Long visitorId,
