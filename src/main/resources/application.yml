@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: WRM
+
+  jpa:
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
+
+  datasource:
+    url: jdbc:postgresql://localhost:5431/wrm
+    username: axel
+    password: 6631
+
+  show-sql: true
+  properties:
+    hibernate:
+      format_sql: true
