@@ -13,3 +13,10 @@ spring:
   properties:
     hibernate:
       format_sql: true
+
+app:
+  waiting-list:
+    default:
+      capacity: 15
+      mode: FULL_TIME
+      algorithm: FIFO
