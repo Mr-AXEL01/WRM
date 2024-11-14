@@ -2,13 +2,16 @@ package net.axel.wrm.service.implementations;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import net.axel.wrm.config.applicationProprtiesConfig.WaitingRoomConfigProperties;
 import net.axel.wrm.domain.dtos.waitingRoom.WaitingRoomRequestDTO;
 import net.axel.wrm.domain.dtos.waitingRoom.WaitingRoomResponseDTO;
+import net.axel.wrm.domain.entities.WaitingRoom;
 import net.axel.wrm.mapper.WaitingRoomMapper;
 import net.axel.wrm.repository.WaitingRoomRepository;
 import net.axel.wrm.service.WaitingRoomService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -17,8 +20,10 @@ import java.util.List;
 @RequiredArgsConstructor
 public class WaitingRoomServiceImpl implements WaitingRoomService {
 
+    private final WaitingRoomConfigProperties waitingRoomConfigProperties;
     private final WaitingRoomRepository repository;
     private final WaitingRoomMapper mapper;
+
 
     @Override
     public List<WaitingRoomResponseDTO> getAll() {
@@ -37,7 +42,15 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
 
     @Override
     public WaitingRoomResponseDTO create(WaitingRoomRequestDTO dto) {
-        return null;
+        WaitingRoom waitingRoom = mapper.toEntity(dto)
+                .setDate(LocalDate.now())
+                .setAlgorithm(dto.algorithm() != null ? dto.algorithm() : waitingRoomConfigProperties.algorithm())
+                .setCapacity(dto.capacity() != null ? dto.capacity() : waitingRoomConfigProperties.capacity())
+                .setMode(dto.mode() != null ? dto.mode() : waitingRoomConfigProperties.mode());
+
+        WaitingRoom savedWaitingRoom = repository.save(waitingRoom);
+
+        return mapper.toResponseDto(savedWaitingRoom);
     }
 
     @Override
