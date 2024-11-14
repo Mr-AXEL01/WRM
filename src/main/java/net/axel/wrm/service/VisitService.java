@@ -2,6 +2,7 @@ package net.axel.wrm.service;
 
 import net.axel.wrm.domain.dtos.visit.VisitRequestDTO;
 import net.axel.wrm.domain.dtos.visit.VisitResponseDTO;
+import net.axel.wrm.domain.dtos.visit.VisitUpdateRequestDTO;
 
 import java.util.List;
 
@@ -12,7 +13,7 @@ public interface VisitService {
 
     VisitResponseDTO create(VisitRequestDTO dto);
 
-    VisitResponseDTO update(Long id, VisitRequestDTO dto);
+    VisitResponseDTO update(Long id, VisitUpdateRequestDTO dto);
 
     void delete(Long id);
 }
