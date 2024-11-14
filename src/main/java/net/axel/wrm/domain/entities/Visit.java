@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import net.axel.wrm.domain.embeddeds.VisitKey;
 import net.axel.wrm.domain.enums.Status;
 
@@ -20,6 +21,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Accessors(chain = true)
 public class Visit implements Serializable {
     @EmbeddedId
     private VisitKey id;
