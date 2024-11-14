@@ -15,8 +15,13 @@ spring:
       format_sql: true
 
 app:
-  waiting-list:
+  waiting-room:
     default:
       capacity: 15
       mode: FULL_TIME
       algorithm: FIFO
+
+  visit:
+    default:
+      priority: 255
+      ept: PT3M
