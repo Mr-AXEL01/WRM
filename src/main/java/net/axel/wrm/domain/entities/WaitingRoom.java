@@ -6,9 +6,11 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 import net.axel.wrm.domain.enums.Mode;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -18,6 +20,7 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Accessors(chain = true)
 public class WaitingRoom implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +28,7 @@ public class WaitingRoom implements Serializable {
 
     @NotNull
     @Column(name = "date")
-    private Date date;
+    private LocalDate date;
 
     @NotBlank
     @Column(name = "algorithm")
