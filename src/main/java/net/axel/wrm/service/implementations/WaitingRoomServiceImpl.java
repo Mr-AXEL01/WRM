@@ -22,12 +22,17 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
 
     @Override
     public List<WaitingRoomResponseDTO> getAll() {
-        return List.of();
+        return repository.findAll()
+                .stream()
+                .map(mapper::toResponseDto)
+                .toList();
     }
 
     @Override
     public WaitingRoomResponseDTO getById(Long id) {
-        return null;
+        return repository.findById(id)
+                .map(mapper::toResponseDto)
+                .orElseThrow(() -> new RuntimeException("WaitingRoom not found with id : " + id));
     }
 
     @Override
