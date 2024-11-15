@@ -44,9 +44,9 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
     public WaitingRoomResponseDTO create(WaitingRoomRequestDTO dto) {
         WaitingRoom waitingRoom = mapper.toEntity(dto)
                 .setDate(LocalDate.now())
-                .setAlgorithm(dto.algorithm() != null ? dto.algorithm() : waitingRoomConfigProperties.algorithm())
-                .setCapacity(dto.capacity() != null ? dto.capacity() : waitingRoomConfigProperties.capacity())
-                .setMode(dto.mode() != null ? dto.mode() : waitingRoomConfigProperties.mode());
+                .setAlgorithm(getDefult(dto.algorithm(), waitingRoomConfigProperties.algorithm()))
+                .setCapacity(getDefult(dto.capacity(), waitingRoomConfigProperties.capacity()))
+                .setMode(getDefult(dto.mode(), waitingRoomConfigProperties.mode()));
 
         WaitingRoom savedWaitingRoom = repository.save(waitingRoom);
 
@@ -62,4 +62,9 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
     public void delete(Long id) {
 
     }
+
+    private <T> T getDefult(T v, T dv) {
+        return v != null ? v : dv;
+    }
+
 }
