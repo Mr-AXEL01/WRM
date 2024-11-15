@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 public record WaitingRoomRequestDTO(
-        @NotNull LocalDate date,
+        LocalDate date,
         String algorithm,
         Integer capacity,
         @NotNull Mode mode
