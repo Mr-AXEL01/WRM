@@ -62,8 +62,8 @@ public class VisitServiceImpl implements VisitService {
         Visit visit = mapper.toEntity(dto)
                 .setArrivalTime(LocalDateTime.now())
                 .setStatus(Status.WAITING)
-                .setPriority(dto.priority() != null ? dto.priority() : visitConfigProperties.priority())
-                .setEpt(dto.ept() != null ? dto.ept() : visitConfigProperties.ept())
+                .setPriority(getDefult(dto.priority(), visitConfigProperties.priority()))
+                .setEpt(getDefult(dto.ept(), visitConfigProperties.ept()))
                 .setVisitor(getVisitor(dto.visitorId()))
                 .setWaitingRoom(getWaitingRoom(dto.waitingRoomId()));
         Visit savedVisit = repository.save(visit);
@@ -75,8 +75,8 @@ public class VisitServiceImpl implements VisitService {
         Visit visit = mapper.toEntityFromResponseDto(getById(id))
                 .setArrivalTime(dto.arrivalTime())
                 .setStatus(dto.status())
-                .setEpt(dto.ept() != null ? dto.ept() : visitConfigProperties.ept())
-                .setEpt(dto.ept() != null ? dto.ept() : visitConfigProperties.ept())
+                .setPriority(getDefult(dto.priority(), visitConfigProperties.priority()))
+                .setEpt(getDefult(dto.ept(), visitConfigProperties.ept()))
                 .setVisitor(getVisitor(dto.visitorId()))
                 .setWaitingRoom(getWaitingRoom(dto.waitingRoomId()));
 
@@ -104,5 +104,9 @@ public class VisitServiceImpl implements VisitService {
     private Visitor getVisitor(Long visitorId) {
         return visitorRepository.findById(visitorId)
                 .orElseThrow(() -> new RuntimeException("Visitor not found with id : " + visitorId));
+    }
+
+    private <T> T getDefult(T v, T dv) {
+        return v != null ? v : dv;
     }
 }
