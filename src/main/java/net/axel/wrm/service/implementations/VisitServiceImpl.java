@@ -7,6 +7,7 @@ import net.axel.wrm.domain.dtos.visit.VisitRequestDTO;
 import net.axel.wrm.domain.dtos.visit.VisitResponseDTO;
 import net.axel.wrm.domain.dtos.visit.VisitUpdateRequestDTO;
 import net.axel.wrm.domain.dtos.waitingRoom.WaitingRoomResponseDTO;
+import net.axel.wrm.domain.embeddeds.VisitKey;
 import net.axel.wrm.domain.entities.Visit;
 import net.axel.wrm.domain.entities.Visitor;
 import net.axel.wrm.domain.entities.WaitingRoom;
@@ -48,7 +49,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public VisitResponseDTO getById(Long id) {
+    public VisitResponseDTO getById(VisitKey id) {
         return repository.findById(id)
                 .map(mapper::toResponseDto)
                 .orElseThrow(() -> new RuntimeException("visit not found with id : " + id));
@@ -71,7 +72,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public VisitResponseDTO update(Long id, VisitUpdateRequestDTO dto) {
+    public VisitResponseDTO update(VisitKey id, VisitUpdateRequestDTO dto) {
         Visit visit = mapper.toEntityFromResponseDto(getById(id))
                 .setArrivalTime(dto.arrivalTime())
                 .setStatus(dto.status())
@@ -92,7 +93,7 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
-    public void delete(Long id) {
+    public void delete(VisitKey id) {
         repository.deleteById(id);
     }
 
