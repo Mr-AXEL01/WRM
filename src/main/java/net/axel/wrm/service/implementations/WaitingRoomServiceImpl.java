@@ -55,12 +55,18 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
 
     @Override
     public WaitingRoomResponseDTO update(Long id, WaitingRoomRequestDTO dto) {
-        return null;
+        WaitingRoom waitingRoom = mapper.toEntityFromResponseDto(getById(id))
+                .setDate(dto.date())
+                .setAlgorithm(getDefult(dto.algorithm(), waitingRoomConfigProperties.algorithm()))
+                .setCapacity(getDefult(dto.capacity(), waitingRoomConfigProperties.capacity()))
+                .setMode(getDefult(dto.mode(), waitingRoomConfigProperties.mode()));
+        WaitingRoom updatedWaitingRoom = repository.save(waitingRoom);
+        return mapper.toResponseDto(updatedWaitingRoom);
     }
 
     @Override
     public void delete(Long id) {
-
+        repository.deleteById(id);
     }
 
     private <T> T getDefult(T v, T dv) {
