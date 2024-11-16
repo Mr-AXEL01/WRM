@@ -12,6 +12,8 @@ public interface VisitService {
 
     VisitResponseDTO getById(VisitKey id);
 
+    List<VisitResponseDTO> schedule(Long waitingRoomId);
+
     VisitResponseDTO create(VisitRequestDTO dto);
 
     VisitResponseDTO update(VisitKey id, VisitUpdateRequestDTO dto);
