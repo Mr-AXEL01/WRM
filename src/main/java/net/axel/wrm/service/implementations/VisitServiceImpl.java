@@ -17,12 +17,15 @@ import net.axel.wrm.mapper.VisitorMapper;
 import net.axel.wrm.mapper.WaitingRoomMapper;
 import net.axel.wrm.repository.VisitRepository;
 import net.axel.wrm.repository.VisitorRepository;
+import net.axel.wrm.service.ScheduleService;
 import net.axel.wrm.service.VisitService;
 import net.axel.wrm.service.WaitingRoomService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -38,7 +41,7 @@ public class VisitServiceImpl implements VisitService {
     private final WaitingRoomMapper waitingRoomMapper;
     private final VisitorRepository visitorRepository; //to change later to service
     private final VisitorMapper visitorMapper;
-
+    private final Map<String, ScheduleService> schedulingStrategies;
 
     @Override
     public List<VisitResponseDTO> getAll() {
@@ -53,6 +56,19 @@ public class VisitServiceImpl implements VisitService {
         return repository.findById(id)
                 .map(mapper::toResponseDto)
                 .orElseThrow(() -> new RuntimeException("visit not found with id : " + id));
+    }
+
+    @Override
+    public List<VisitResponseDTO> schedule(Long waitingRoomId) {
+        WaitingRoomResponseDTO waitingRoomResponse = waitingRoomService.getById(waitingRoomId);
+        WaitingRoom waitingRoom = waitingRoomMapper.toEntityFromResponseDto(waitingRoomResponse);
+
+        List<Visit> visits = repository.findVisitsByWaitingRoomIdAndStatus(waitingRoomId, Status.WAITING);
+        ScheduleService strategy = schedulingStrategies.get(waitingRoom.getAlgorithm().toUpperCase());
+        return strategy.schedule(visits)
+                .stream()
+                .map(mapper::toResponseDto)
+                .toList();
     }
 
     @Override
