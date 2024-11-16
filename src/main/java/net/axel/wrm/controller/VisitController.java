@@ -28,11 +28,17 @@ public class VisitController {
         return ResponseEntity.ok(visits);
     }
 
-    @GetMapping("/{waiting-room-id}/{visitor-id}")
+    @GetMapping("/{waitingRoomId}/{visitorId}")
     public ResponseEntity<VisitResponseDTO> findById(
-            @PathVariable("waiting-room-id") Long waitingRoomId, @PathVariable("visitor-id") Long visitorId) {
+            @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
         VisitResponseDTO waitingRoom = service.getById(new VisitKey(visitorId, waitingRoomId));
         return ResponseEntity.ok(waitingRoom);
+    }
+
+    @GetMapping("/{waitingRoomId}/schedule")
+    public ResponseEntity<List<VisitResponseDTO>> scheduleVisits(@PathVariable("waitingRoomId") Long waitingRoomId) {
+        List<VisitResponseDTO> scheduledVisits = service.schedule(waitingRoomId);
+        return ResponseEntity.ok(scheduledVisits);
     }
 
     @PostMapping
@@ -42,17 +48,17 @@ public class VisitController {
         return new ResponseEntity<>(createdWaitingRoom, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{waiting-room-id}/{visitor-id}")
+    @PutMapping("/{waitingRoomId}/{visitorId}")
     public ResponseEntity<VisitResponseDTO> update(
-            @PathVariable("waiting-room-id") Long waitingRoomId, @PathVariable("visitor-id") Long visitorId,
+            @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId,
             @RequestBody @Valid VisitUpdateRequestDTO dto) {
         VisitResponseDTO updatedWaitingRoom = service.update(new VisitKey(visitorId, waitingRoomId), dto);
         return ResponseEntity.ok(updatedWaitingRoom);
     }
 
-    @DeleteMapping("/{waiting-room-id}/{visitor-id}")
+    @DeleteMapping("/{waitingRoomId}/{visitorId}")
     public ResponseEntity<Void> delete(
-            @PathVariable("waiting-room-id") Long waitingRoomId, @PathVariable("visitor-id") Long visitorId) {
+            @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
         service.delete(new VisitKey(visitorId, waitingRoomId));
         return ResponseEntity.noContent().build();
     }
