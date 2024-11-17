@@ -18,6 +18,8 @@ public interface VisitService {
 
     VisitResponseDTO startVisit(VisitKey id);
 
+    VisitResponseDTO completeVisit(VisitKey id);
+
     VisitResponseDTO update(VisitKey id, VisitUpdateRequestDTO dto);
 
     void delete(VisitKey id);

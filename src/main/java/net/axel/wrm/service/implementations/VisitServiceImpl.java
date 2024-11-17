@@ -95,6 +95,16 @@ public class VisitServiceImpl implements VisitService {
     }
 
     @Override
+    public VisitResponseDTO completeVisit(VisitKey id) {
+        Visit visit = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("visit not found with id : " + id));
+
+        visit.setEndTime(LocalDateTime.now())
+                .setStatus(Status.FINISHED);
+        return mapper.toResponseDto(visit);
+    }
+
+    @Override
     public VisitResponseDTO update(VisitKey id, VisitUpdateRequestDTO dto) {
         Visit visit = mapper.toEntityFromResponseDto(getById(id))
                 .setArrivalTime(dto.arrivalTime())
