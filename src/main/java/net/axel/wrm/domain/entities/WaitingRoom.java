@@ -12,6 +12,7 @@ import net.axel.wrm.domain.enums.Mode;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -42,5 +43,5 @@ public class WaitingRoom implements Serializable {
     private Mode mode;
 
     @OneToMany(mappedBy = "waitingRoom")
-    private Set<Visit> visits;
+    private Set<Visit> visits = new HashSet<>();
 }
