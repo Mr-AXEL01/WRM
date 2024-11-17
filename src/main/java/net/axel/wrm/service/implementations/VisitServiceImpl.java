@@ -91,9 +91,7 @@ public class VisitServiceImpl implements VisitService {
 
         visit.setStartTime(LocalDateTime.now())
                 .setStatus(Status.IN_PROGRESS);
-        VisitResponseDTO responseDto = mapper.toResponseDto(visit);
-        System.out.println(responseDto);
-        return responseDto;
+        return mapper.toResponseDto(visit);
     }
 
     @Override
