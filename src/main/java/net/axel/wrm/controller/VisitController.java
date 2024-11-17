@@ -62,6 +62,13 @@ public class VisitController {
         return ResponseEntity.ok(updatedWaitingRoom);
     }
 
+    @PutMapping("complete/{waitingRoomId}/{visitorId}")
+    public ResponseEntity<VisitResponseDTO> completeVisit(
+            @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
+        VisitResponseDTO updatedWaitingRoom = service.completeVisit(new VisitKey(visitorId, waitingRoomId));
+        return ResponseEntity.ok(updatedWaitingRoom);
+    }
+
     @DeleteMapping("/{waitingRoomId}/{visitorId}")
     public ResponseEntity<Void> delete(
             @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
