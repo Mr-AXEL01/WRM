@@ -55,6 +55,12 @@ public class VisitController {
         VisitResponseDTO updatedWaitingRoom = service.update(new VisitKey(visitorId, waitingRoomId), dto);
         return ResponseEntity.ok(updatedWaitingRoom);
     }
+    @PutMapping("start/{waitingRoomId}/{visitorId}")
+    public ResponseEntity<VisitResponseDTO> startVisit(
+            @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
+        VisitResponseDTO updatedWaitingRoom = service.startVisit(new VisitKey(visitorId, waitingRoomId));
+        return ResponseEntity.ok(updatedWaitingRoom);
+    }
 
     @DeleteMapping("/{waitingRoomId}/{visitorId}")
     public ResponseEntity<Void> delete(
