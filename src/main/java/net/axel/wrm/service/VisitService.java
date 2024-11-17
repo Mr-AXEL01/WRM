@@ -16,6 +16,8 @@ public interface VisitService {
 
     VisitResponseDTO create(VisitRequestDTO dto);
 
+    VisitResponseDTO startVisit(VisitKey id);
+
     VisitResponseDTO update(VisitKey id, VisitUpdateRequestDTO dto);
 
     void delete(VisitKey id);

@@ -73,18 +73,25 @@ public class VisitServiceImpl implements VisitService {
 
     @Override
     public VisitResponseDTO create(VisitRequestDTO dto) {
-        Visitor visitor = visitorRepository.findById(dto.visitorId())
-                .orElseThrow(() -> new RuntimeException("Visitor not found with id : " + dto.visitorId()));
-
-        Visit visit = mapper.toEntity(dto)
-                .setArrivalTime(LocalDateTime.now())
-                .setStatus(Status.WAITING)
-                .setPriority(getDefult(dto.priority(), visitConfigProperties.priority()))
-                .setEpt(getDefult(dto.ept(), visitConfigProperties.ept()))
-                .setVisitor(getVisitor(dto.visitorId()))
-                .setWaitingRoom(getWaitingRoom(dto.waitingRoomId()));
+        Visit visit = new Visit(new VisitKey(1L, 1L),
+                LocalDateTime.now(),
+                Status.WAITING,
+                getDefult(dto.priority(), visitConfigProperties.priority()),
+                getDefult(dto.ept(), visitConfigProperties.ept()),
+                getVisitor(dto.visitorId()),
+                getWaitingRoom(dto.waitingRoomId()));
         Visit savedVisit = repository.save(visit);
         return mapper.toResponseDto(savedVisit);
+    }
+
+    @Override
+    public VisitResponseDTO startVisit(VisitKey id) {
+        Visit visit = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("visit not found with id : " + id));
+
+        visit.setStartTime(LocalDateTime.now())
+                .setStatus(Status.IN_PROGRESS);
+        return mapper.toResponseDto(visit);
     }
 
     @Override
