@@ -26,7 +26,6 @@ public class Visit implements Serializable {
     @EmbeddedId
     private VisitKey id;
 
-    @NotNull
     @Column(name = "arrival_time")
     private LocalDateTime arrivalTime;
 
@@ -45,13 +44,23 @@ public class Visit implements Serializable {
     @Column(name = "ept") //stands for the => Estimated Processing Time
     private Duration ept;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("visitorId")
     @JoinColumn(name = "visitor_id")
     private Visitor visitor;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @MapsId("waitingRoomId")
     @JoinColumn(name = "waiting_room_id")
     private WaitingRoom waitingRoom;
+
+    public Visit(VisitKey id, LocalDateTime arrivalTime, Status status, Integer priority, Duration ept, Visitor visitor, WaitingRoom waitingRoom) {
+        this.id = id;
+        this.arrivalTime = arrivalTime;
+        this.status = status;
+        this.priority = priority;
+        this.ept = ept;
+        this.visitor = visitor;
+        this.waitingRoom = waitingRoom;
+    }
 }
