@@ -23,8 +23,9 @@ public class VisitController {
     private final VisitService service;
 
     @GetMapping
-    public ResponseEntity<List<VisitResponseDTO>> findAll() {
-        List<VisitResponseDTO> visits = service.getAll();
+    public ResponseEntity<List<VisitResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "10") int size) {
+        List<VisitResponseDTO> visits = service.getAll(page, size);
         return ResponseEntity.ok(visits);
     }
 
@@ -55,21 +56,21 @@ public class VisitController {
         VisitResponseDTO updatedWaitingRoom = service.update(new VisitKey(visitorId, waitingRoomId), dto);
         return ResponseEntity.ok(updatedWaitingRoom);
     }
-    @PutMapping("start/{waitingRoomId}/{visitorId}")
+    @PutMapping("/start/{waitingRoomId}/{visitorId}")
     public ResponseEntity<VisitResponseDTO> startVisit(
             @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
         VisitResponseDTO updatedWaitingRoom = service.startVisit(new VisitKey(visitorId, waitingRoomId));
         return ResponseEntity.ok(updatedWaitingRoom);
     }
 
-    @PutMapping("complete/{waitingRoomId}/{visitorId}")
+    @PutMapping("/complete/{waitingRoomId}/{visitorId}")
     public ResponseEntity<VisitResponseDTO> completeVisit(
             @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
         VisitResponseDTO updatedWaitingRoom = service.completeVisit(new VisitKey(visitorId, waitingRoomId));
         return ResponseEntity.ok(updatedWaitingRoom);
     }
 
-    @PutMapping("cancel/{waitingRoomId}/{visitorId}")
+    @PutMapping("/cancel/{waitingRoomId}/{visitorId}")
     public ResponseEntity<VisitResponseDTO> cancelVisit(
             @PathVariable("waitingRoomId") Long waitingRoomId, @PathVariable("visitorId") Long visitorId) {
         VisitResponseDTO updatedWaitingRoom = service.cancelVisit(new VisitKey(visitorId, waitingRoomId));
