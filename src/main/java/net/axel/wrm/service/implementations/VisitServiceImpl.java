@@ -21,6 +21,9 @@ import net.axel.wrm.service.ScheduleService;
 import net.axel.wrm.service.VisitService;
 import net.axel.wrm.service.WaitingRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -44,9 +47,11 @@ public class VisitServiceImpl implements VisitService {
     private final Map<String, ScheduleService> schedulingStrategies;
 
     @Override
-    public List<VisitResponseDTO> getAll() {
-        return repository.findAll()
-                .stream()
+    public List<VisitResponseDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Visit> visitsPage = repository.findAll(pageable);
+
+        return visitsPage.stream()
                 .map(mapper::toResponseDto)
                 .toList();
     }

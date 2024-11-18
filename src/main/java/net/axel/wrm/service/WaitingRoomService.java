@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface WaitingRoomService {
 
-    List<WaitingRoomResponseDTO> getAll();
+    List<WaitingRoomResponseDTO> getAll(int page, int size);
 
     WaitingRoomResponseDTO getById(Long id);
 

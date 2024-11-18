@@ -8,7 +8,7 @@ import net.axel.wrm.domain.embeddeds.VisitKey;
 import java.util.List;
 
 public interface VisitService {
-    List<VisitResponseDTO> getAll();
+    List<VisitResponseDTO> getAll(int page, int size);
 
     VisitResponseDTO getById(VisitKey id);
 

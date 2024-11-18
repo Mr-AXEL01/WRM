@@ -11,6 +11,9 @@ import net.axel.wrm.domain.entities.WaitingRoom;
 import net.axel.wrm.mapper.WaitingRoomMapper;
 import net.axel.wrm.repository.WaitingRoomRepository;
 import net.axel.wrm.service.WaitingRoomService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
@@ -31,9 +34,12 @@ public class WaitingRoomServiceImpl implements WaitingRoomService {
 
 
     @Override
-    public List<WaitingRoomResponseDTO> getAll() {
-        return repository.findAll()
-                .stream()
+    public List<WaitingRoomResponseDTO> getAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<WaitingRoom> waitingRoomPage = repository.findAll(pageable);
+
+        return waitingRoomPage.stream()
                 .map(mapper::toResponseDto)
                 .toList();
     }

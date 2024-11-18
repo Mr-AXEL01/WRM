@@ -22,8 +22,9 @@ public class WaitingRoomController {
     private final WaitingRoomService service;
 
     @GetMapping
-    public ResponseEntity<List<WaitingRoomResponseDTO>> findAll() {
-        List<WaitingRoomResponseDTO> waitingRooms = service.getAll();
+    public ResponseEntity<List<WaitingRoomResponseDTO>> findAll(@RequestParam(defaultValue = "0") int page,
+                                                                @RequestParam(defaultValue = "10") int size) {
+        List<WaitingRoomResponseDTO> waitingRooms = service.getAll(page, size);
         return ResponseEntity.ok(waitingRooms);
     }
 
