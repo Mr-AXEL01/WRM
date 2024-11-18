@@ -19,7 +19,7 @@ class WaitingRoomControllerTest {
 
     @Container
     @ServiceConnection
-    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>( "postgres:latest");
+    static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:latest");
 
     @Autowired
     WaitingRoomRepository waitingRoomRepository;
