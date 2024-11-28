@@ -1,11 +1,14 @@
 spring:
+  mvc:
+    format:
+      date: yyyy-MM-dd
   jpa:
     generate-ddl: true
     hibernate:
       ddl-auto: create
 
   datasource:
-    url: jdbc:postgresql://localhost:5431/wrm
+    url: jdbc:postgresql://localhost:5432/wrm
     username: axel
     password: 6631
 
