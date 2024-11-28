@@ -6,8 +6,8 @@ services:
       - 'POSTGRES_DB=wrm'
       - 'POSTGRES_PASSWORD=6631'
     ports:
-      - "5431:5431"
-    command: [ "postgres", "-p", "5431" ]
+      - "5432:5432"
+    command: [ "postgres", "-p", "5432" ]
 
   pgadmin:
     image: 'dpage/pgadmin4:latest'
