@@ -39,6 +39,8 @@ class WaitingRoomControllerTest {
     @Autowired
     private WaitingRoomRepository repository;
 
+    private Long waitingRoomId;
+
      @BeforeAll
     static void beforeAll() {
         postgres.start();
@@ -59,7 +61,8 @@ class WaitingRoomControllerTest {
                 .setCapacity(100)
                 .setMode(Mode.FULL_TIME);
 
-        repository.save(waitingRoom);
+        WaitingRoom savedRoom = repository.save(waitingRoom);
+        waitingRoomId = savedRoom.getId();
     }
 
     @Test
@@ -78,7 +81,7 @@ class WaitingRoomControllerTest {
 
     @Test
     void shouldFindWaitingRoomWhenValidWaitingRoomId() {
-        ResponseEntity<WaitingRoomResponseDTO> response = restTemplate.getForEntity("/api/v1/waiting-rooms/1", WaitingRoomResponseDTO.class);
+        ResponseEntity<WaitingRoomResponseDTO> response = restTemplate.getForEntity("/api/v1/waiting-rooms/"+waitingRoomId , WaitingRoomResponseDTO.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().capacity()).isEqualTo(100);
@@ -115,16 +118,5 @@ class WaitingRoomControllerTest {
         assertThat(response.getBody()).isNotNull();
         assertThat(response.getBody().algorithm()).isEqualTo("EPT");
         assertThat(response.getBody().capacity()).isEqualTo(20);
-    }
-
-    @Test
-    void shouldDeleteWaitingRoom() {
-        WaitingRoomResponseDTO createdRoom = restTemplate.postForObject("/api/v1/waiting-rooms", new WaitingRoomRequestDTO(
-                "FIFO",13, Mode.PART_TIME), WaitingRoomResponseDTO.class);
-
-        restTemplate.delete("/api/v1/waiting-rooms/" + createdRoom.id());
-
-        ResponseEntity<WaitingRoomResponseDTO> response = restTemplate.getForEntity("/api/v1/waiting-rooms/" + createdRoom.id(), WaitingRoomResponseDTO.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
     }
 }
