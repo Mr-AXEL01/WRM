@@ -20,7 +20,6 @@ import net.axel.wrm.repository.VisitorRepository;
 import net.axel.wrm.service.ScheduleService;
 import net.axel.wrm.service.VisitService;
 import net.axel.wrm.service.WaitingRoomService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @Service
 @Transactional
@@ -42,8 +40,7 @@ public class VisitServiceImpl implements VisitService {
     private final VisitConfigProperties visitConfigProperties;
     private final WaitingRoomService waitingRoomService;
     private final WaitingRoomMapper waitingRoomMapper;
-    private final VisitorRepository visitorRepository; //to change later to service
-    private final VisitorMapper visitorMapper;
+    private final VisitorRepository visitorRepository;
     private final Map<String, ScheduleService> schedulingStrategies;
 
     @Override
