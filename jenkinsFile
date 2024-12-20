@@ -1,0 +1,14 @@
+pipline {
+tools {
+maven "Maven"
+jdk "Jdk"
+
+}
+stages {
+stage("build") {
+step{
+sh "mvn clean package -DskipTests"
+}
+}
+}
+}
