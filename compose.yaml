@@ -1,22 +1,47 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  server:
+    build:
+      context: .
+      target: development
+    ports:
+      - "8080:8080"
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/wrm
+      SPRING_DATASOURCE_USERNAME: axel
+      SPRING_DATASOURCE_PASSWORD: 6631
+    develop:
+      watch:
+        - action: rebuild
+          path: .
+  db:
+    image: "postgres:latest"
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
     environment:
       - 'POSTGRES_USER=axel'
       - 'POSTGRES_DB=wrm'
       - 'POSTGRES_PASSWORD=6631'
     ports:
       - "5432:5432"
-#    command: [ "postgres", "-p", "5432" ]
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "wrm"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
-  pgadmin:
-    image: 'dpage/pgadmin4:latest'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: axelyoucode@gmail.com
-      PGADMIN_DEFAULT_PASSWORD: admin
-      PGADMIN_LISTEN_PORT: 5050
-    ports:
-      - '5050:5050'
+#  pgadmin:
+#    image: 'dpage/pgadmin4:latest'
+#    environment:
+#      PGADMIN_DEFAULT_EMAIL: axelyoucode@gmail.com
+#      PGADMIN_DEFAULT_PASSWORD: admin
+#      PGADMIN_LISTEN_PORT: 5050
+#    ports:
+#      - '5050:5050'
 
   sonarqube:
     image: sonarqube:latest
@@ -35,3 +60,6 @@ services:
       POSTGRES_USER: sonar
       POSTGRES_PASSWORD: sonar
       POSTGRES_DB: sonar
+
+volumes:
+  db-data:
